@@ -1,0 +1,30 @@
+{
+  "name": "zalando-lounge",
+  "version": "1.0.0",
+  "description": "Products reservation",
+  "main": "",
+  "type": "module",
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HelloBro89/zalando-lounge.git"
+  },
+  "author": "P.V.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HelloBro89/zalando-lounge/issues"
+  },
+  "homepage": "https://github.com/HelloBro89/zalando-lounge#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "crawlee": "^3.4.0",
+    "dotenv": "^16.3.1",
+    "playwright": "^1.35.1",
+    "puppeteer": "^20.7.4",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}
