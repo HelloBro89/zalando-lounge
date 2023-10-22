@@ -1,6 +1,7 @@
 import { Dataset, LogLevel, log, purgeDefaultStorages } from 'crawlee';
 import { removeElement } from '../utils/index.js';
 import config from '../../config/envs-config.js';
+import { setFilters } from './setFilters.js';
 
 const PRODUCTS_TO_BASKET = [
   {
@@ -30,35 +31,36 @@ const SELECTORS = {
 log.setLevel(LogLevel.DEBUG);
 
 export const loginHandler = async ({ request, crawler, page }) => {
-  await page.waitForTimeout(2000);
+  // await page.waitForTimeout(2000);
   console.log(' ------------ ENVS ------------------- \n', config);
   console.log(' ------------ LOGING ------------------- \n', request);
   await removeElement(page, SELECTORS.cookies);
   await page.click(SELECTORS.loginBtn);
+  await page.waitForTimeout(30000);
+  // await page.waitForSelector(SELECTORS.mailLoginBtn, { visible: true });
+  // await page.click(SELECTORS.mailLoginBtn);
+  // await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
-  await page.waitForTimeout(2000);
-  await page.waitForSelector(SELECTORS.mailLoginBtn);
-  await page.click(SELECTORS.mailLoginBtn);
+  // await page.waitForSelector(SELECTORS.mailForm);
+  // await page.type(SELECTORS.mailForm, config.LOGIN, { delay: 50 });
+  // await page.waitForSelector(SELECTORS.passwordForm);
 
-  await page.waitForTimeout(2000);
-  await page.waitForSelector(SELECTORS.mailForm);
-  await page.type(SELECTORS.mailForm, config.LOGIN, { delay: 100 });
-  await page.waitForSelector(SELECTORS.passwordForm);
-  await page.waitForTimeout(1000);
-  await page.type(SELECTORS.passwordForm, config.PASSWORD, { delay: 100 });
-  await page.waitForTimeout(1111);
-  await page.click(SELECTORS.showPass);
-  await page.waitForTimeout(3000);
-  await page.click(SELECTORS.enterToAccountBtn);
+  // await page.type(SELECTORS.passwordForm, config.PASSWORD, { delay: 50 });
 
-  await page.waitForNavigation({ waitUntil: 'networkidle2' });
+  // // await page.click(SELECTORS.showPass); // * click to hide password and login
+  // await page.waitForTimeout(1000);
+  // await page.click(SELECTORS.enterToAccountBtn);
 
-  await removeElement(page, SELECTORS.cookies);
+  // await page.waitForNavigation({ waitUntil: 'networkidle2' });
+  // // page.setTimeout(60000);
+  // await removeElement(page, SELECTORS.cookies);
 
-  await crawler.addRequests(PRODUCTS_TO_BASKET);
+  // await setFilters(page);
 
-  await Dataset.pushData({
-    url: request.url,
-    status: 'DONE-LOGIN',
-  });
+  // // await crawler.addRequests(PRODUCTS_TO_BASKET); // ! add to basket handler
+
+  // await Dataset.pushData({
+  //   url: request.url,
+  //   status: 'DONE-LOGIN',
+  // });
 };
