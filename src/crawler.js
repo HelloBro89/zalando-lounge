@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { Dataset, PuppeteerCrawler, log, LogLevel, KeyValueStore, Configuration } from 'crawlee';
 import { router } from './routers/routers.js';
 
@@ -14,17 +15,14 @@ export const startCrawler = async (urlToCampaign) => {
       minConcurrency: 4,
       maxConcurrency: 20,
       maxRequestRetries: 3,
-      requestHandlerTimeoutSecs: 30,
       headless: false,
       requestHandler: router,
       useSessionPool: false,
-      navigationTimeoutSecs: 60,
+      requestHandlerTimeoutSecs: 60,
       preNavigationHooks: [
-        async (crawlingContext, /* browserContext, */ gotoOptions) => {
-          console.log(crawlingContext);
+        async (crawlingContext, gotoOptions) => {
           gotoOptions.timeout = 60_000;
           gotoOptions.waitUntil = 'networkidle2';
-          // gotoOptions.waitUntil = 'domcontentloaded';
           console.log(gotoOptions);
         },
       ],

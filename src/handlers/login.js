@@ -3,17 +3,6 @@ import { removeElement } from '../utils/index.js';
 import config from '../../config/envs-config.js';
 import { setFilters } from './setFilters.js';
 
-const PRODUCTS_TO_BASKET = [
-  {
-    label: 'basket',
-    url: 'https://www.zalando-lounge.pl/campaigns/ZZO2KBX/articles/N1243A18G-Q16',
-  },
-  {
-    label: 'basket',
-    url: 'https://www.zalando-lounge.pl/campaigns/ZZO2DCL/articles/ZZO171519-Q00',
-  },
-];
-
 const SELECTORS = {
   cookies: 'div#usercentrics-button',
   loginBtn: '#topbar-cta-btn',
@@ -36,31 +25,26 @@ export const loginHandler = async ({ request, crawler, page }) => {
   console.log(' ------------ LOGING ------------------- \n', request);
   await removeElement(page, SELECTORS.cookies);
   await page.click(SELECTORS.loginBtn);
-  await page.waitForTimeout(30000);
-  // await page.waitForSelector(SELECTORS.mailLoginBtn, { visible: true });
-  // await page.click(SELECTORS.mailLoginBtn);
-  // await page.waitForNavigation({ waitUntil: 'networkidle2' });
+  console.log(' TEST ');
+  await page.waitForSelector(SELECTORS.mailLoginBtn, { visible: true });
+  await page.click(SELECTORS.mailLoginBtn);
+  await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
-  // await page.waitForSelector(SELECTORS.mailForm);
-  // await page.type(SELECTORS.mailForm, config.LOGIN, { delay: 50 });
-  // await page.waitForSelector(SELECTORS.passwordForm);
+  await page.waitForSelector(SELECTORS.mailForm);
+  await page.type(SELECTORS.mailForm, config.LOGIN);
+  await page.waitForSelector(SELECTORS.passwordForm);
 
-  // await page.type(SELECTORS.passwordForm, config.PASSWORD, { delay: 50 });
+  await page.type(SELECTORS.passwordForm, config.PASSWORD /* , { delay: 50 } */);
 
-  // // await page.click(SELECTORS.showPass); // * click to hide password and login
-  // await page.waitForTimeout(1000);
-  // await page.click(SELECTORS.enterToAccountBtn);
+  await page.waitForTimeout(1000);
+  await page.click(SELECTORS.enterToAccountBtn);
 
-  // await page.waitForNavigation({ waitUntil: 'networkidle2' });
-  // // page.setTimeout(60000);
-  // await removeElement(page, SELECTORS.cookies);
+  await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
-  // await setFilters(page);
-
-  // // await crawler.addRequests(PRODUCTS_TO_BASKET); // ! add to basket handler
-
-  // await Dataset.pushData({
-  //   url: request.url,
-  //   status: 'DONE-LOGIN',
-  // });
+  await removeElement(page, SELECTORS.cookies);
+  const productLinks = await setFilters(page);
+  for (const productLink of productLinks) {
+    await Dataset.pushData(productLink);
+  }
+  await crawler.addRequests(productLinks); // ! add to basket handler
 };

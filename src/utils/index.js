@@ -1,3 +1,4 @@
+import cheerio from 'cheerio';
 export const removeElement = (page, selector, elementHandle) =>
   page.evaluate(
     (selector, elementHandle) => {
@@ -13,3 +14,8 @@ export const removeElement = (page, selector, elementHandle) =>
     selector,
     elementHandle
   );
+
+export const getHTML = async (page) => {
+  const html = await page.evaluate(() => document.querySelector('html').outerHTML);
+  return cheerio.load(html);
+};
