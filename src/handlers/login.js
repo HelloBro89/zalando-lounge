@@ -1,7 +1,7 @@
 import { Dataset, LogLevel, log, purgeDefaultStorages } from 'crawlee';
 import { removeElement } from '../utils/index.js';
-import config from '../../config/envs-config.js';
-import { setFilters } from './setFilters.js';
+import config from '../../config/app-config.js';
+import { setFiltersAndGetLinks } from './setFiltersAndGetLinks.js';
 
 const SELECTORS = {
   cookies: 'div#usercentrics-button',
@@ -22,10 +22,10 @@ log.setLevel(LogLevel.DEBUG);
 export const loginHandler = async ({ request, crawler, page }) => {
   // await page.waitForTimeout(2000);
   console.log(' ------------ ENVS ------------------- \n', config);
-  console.log(' ------------ LOGING ------------------- \n', request);
+  console.log(' ------------ LOGING ------------------- \n', request.userData);
   await removeElement(page, SELECTORS.cookies);
   await page.click(SELECTORS.loginBtn);
-  console.log(' TEST ');
+
   await page.waitForSelector(SELECTORS.mailLoginBtn, { visible: true });
   await page.click(SELECTORS.mailLoginBtn);
   await page.waitForNavigation({ waitUntil: 'networkidle2' });
@@ -34,7 +34,7 @@ export const loginHandler = async ({ request, crawler, page }) => {
   await page.type(SELECTORS.mailForm, config.LOGIN);
   await page.waitForSelector(SELECTORS.passwordForm);
 
-  await page.type(SELECTORS.passwordForm, config.PASSWORD /* , { delay: 50 } */);
+  await page.type(SELECTORS.passwordForm, config.PASSWORD);
 
   await page.waitForTimeout(1000);
   await page.click(SELECTORS.enterToAccountBtn);
@@ -42,9 +42,5 @@ export const loginHandler = async ({ request, crawler, page }) => {
   await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
   await removeElement(page, SELECTORS.cookies);
-  const productLinks = await setFilters(page);
-  for (const productLink of productLinks) {
-    await Dataset.pushData(productLink);
-  }
-  await crawler.addRequests(productLinks); // ! add to basket handler
+  await crawler.addRequests(request.userData.requests);
 };

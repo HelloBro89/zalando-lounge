@@ -1,9 +1,10 @@
-// import { Dataset, LogLevel, log } from 'crawlee';
-// import { removeElement } from '../utils/index.js';
 import { getHTML } from '../utils/index.js';
 import { getProductLinks } from '../helpers/getLinks.js';
+import { Dataset } from 'crawlee';
+import { removeElement } from '../utils/index.js';
 
 const SELECTORS = {
+  cookies: 'div#usercentrics-button',
   mainCategory: {
     mainCategoryBtn: '#category-tab-selector',
     sex: {
@@ -30,7 +31,8 @@ const SELECTORS = {
   },
 };
 
-export const setFilters = async (page) => {
+export const setFiltersAndGetLinks = async ({ request, crawler, page }) => {
+  await removeElement(page, SELECTORS.cookies);
   await page.waitForSelector(SELECTORS.mainCategory.mainCategoryBtn);
   await page.click(SELECTORS.mainCategory.mainCategoryBtn);
   await page.waitForTimeout(1000);
@@ -65,6 +67,9 @@ export const setFilters = async (page) => {
 
   const $ = await getHTML(page);
   const productLinks = getProductLinks($);
-  return productLinks;
-  //   await dataset.pushData(outputObj);
+
+  for (const productLink of productLinks) {
+    await Dataset.pushData(productLink);
+  }
+  await crawler.addRequests(productLinks); // ! add to basket handler
 };

@@ -14,5 +14,6 @@ export const addToBasket = async ({ request, page }) => {
   await page.click(SELECTORS.productSize);
   await page.waitForTimeout(500);
   await page.click(SELECTORS.basketBtn);
+  await page.waitForTimeout(1000);
   return;
 };

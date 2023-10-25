@@ -1,20 +1,24 @@
 import * as fs from 'fs';
 import { Dataset, PuppeteerCrawler, log, LogLevel, KeyValueStore, Configuration } from 'crawlee';
 import { router } from './routers/routers.js';
+import config from '../config/app-config.js';
 
-export const startCrawler = async (urlToCampaign) => {
-  const LOGIN_LINK = [
+export const startCrawler = async (params) => {
+  const LOGIN_DATA_LINK = [
     {
       label: 'login',
-      url: `https://www.zalando-lounge.pl/campaigns/${urlToCampaign}/1`,
+      url: config.LOGIN_URL,
+      userData: {
+        jobIndex: 0,
+        ...params,
+      },
     },
   ];
-
   const crawler = new PuppeteerCrawler(
     {
-      minConcurrency: 4,
+      minConcurrency: 5,
       maxConcurrency: 20,
-      maxRequestRetries: 3,
+      maxRequestRetries: 0,
       headless: false,
       requestHandler: router,
       useSessionPool: false,
@@ -23,7 +27,6 @@ export const startCrawler = async (urlToCampaign) => {
         async (crawlingContext, gotoOptions) => {
           gotoOptions.timeout = 60_000;
           gotoOptions.waitUntil = 'networkidle2';
-          console.log(gotoOptions);
         },
       ],
       async failedRequestHandler({ request, error }) {
@@ -41,6 +44,6 @@ export const startCrawler = async (urlToCampaign) => {
     // config,
   );
 
-  await crawler.run(LOGIN_LINK);
+  await crawler.run(LOGIN_DATA_LINK);
   await Dataset.exportToJSON('test-output');
 };
