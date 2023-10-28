@@ -32,6 +32,8 @@ const SELECTORS = {
 };
 
 export const setFiltersAndGetLinks = async ({ request, crawler, page }) => {
+  console.log(' ------------ FILTERING ------------------- \n', request);
+
   await removeElement(page, SELECTORS.cookies);
   await page.waitForSelector(SELECTORS.mainCategory.mainCategoryBtn);
   await page.click(SELECTORS.mainCategory.mainCategoryBtn);

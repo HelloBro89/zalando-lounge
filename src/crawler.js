@@ -22,7 +22,8 @@ export const startCrawler = async (params) => {
       headless: false,
       requestHandler: router,
       useSessionPool: false,
-      requestHandlerTimeoutSecs: 60,
+      // sessionPoolOptions: { maxPoolSize: 100 },
+      requestHandlerTimeoutSecs: 999999,
       preNavigationHooks: [
         async (crawlingContext, gotoOptions) => {
           gotoOptions.timeout = 60_000;

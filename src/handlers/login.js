@@ -1,5 +1,5 @@
 import { Dataset, LogLevel, log, purgeDefaultStorages } from 'crawlee';
-import { removeElement } from '../utils/index.js';
+import { removeElement, runAtSpecificTime } from '../utils/index.js';
 import config from '../../config/app-config.js';
 import { setFiltersAndGetLinks } from './setFiltersAndGetLinks.js';
 
@@ -20,9 +20,11 @@ const SELECTORS = {
 log.setLevel(LogLevel.DEBUG);
 
 export const loginHandler = async ({ request, crawler, page }) => {
-  // await page.waitForTimeout(2000);
   console.log(' ------------ ENVS ------------------- \n', config);
-  console.log(' ------------ LOGING ------------------- \n', request.userData);
+  console.log(' ------------ LOGGING DATA------------------- \n', {
+    REQUEST_FULL: request,
+    USER_DATA: request.userData,
+  });
   await removeElement(page, SELECTORS.cookies);
   await page.click(SELECTORS.loginBtn);
 
@@ -42,5 +44,10 @@ export const loginHandler = async ({ request, crawler, page }) => {
   await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
   await removeElement(page, SELECTORS.cookies);
-  await crawler.addRequests(request.userData.requests);
+
+  console.log(' ------------ START TIMER ------------------- \n');
+  await runAtSpecificTime(async () => {
+    await crawler.addRequests(request.userData.requests);
+  }, request.userData.targetTime);
+  console.log(' ------------ END TIMER ------------------- \n');
 };
