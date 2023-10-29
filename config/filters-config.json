@@ -1,0 +1,211 @@
+{
+    "SEX": {
+        "WOMAN": "Kobiety",
+        "MAN": "Mężczyźni",
+        "GIRLS": "Dziewczynki",
+        "BOYS": "Chłopcy"
+    },
+    "PRODUCT_TYPES": {
+        "SHOES": "SHOES",
+        "CLOTHES": "CLOTHES"
+    },
+    "PRODUCT_STYLE": {
+        "SHOES": {
+            "ALL": "allShoes",
+            "SNEAKERS": "Sneakersy",
+            "BOOTS": "Kozaki",
+            "ANKLE": "Botki",
+            "LOW_SHOES": "Półbuty",
+            "PUMPS": "Czółenka",
+            "SANDALS": "Sandały",
+            "SLIPPERS": "Kapcie",
+            "BATHING_SHOES": "Buty kąpielowe",
+            "SUMMER": "Buty letnie"
+        },
+        "CLOTHES": {
+            "ALL": "allClothes",
+            "JACKETS AND_COATS": "Kurtki i płaszcze",
+            "SWEATERS_AND_SWEATSHIRTS": "Swetry i bluzy",
+            "DRESSES": "Sukienki",
+            "BLOUSES_AND_TUNICS": "Bluzki i tuniki",
+            "T-SHIRTS_AND_TOPS": "Koszulki i topy",
+            "JEANS": "Jeansy",
+            "PANTS": "Spodnie",
+            "SKIRTS": "Spódnice",
+            "UNDERWEAR": "Bielizna",
+            "BEACH": "Moda plażowa"
+        }
+    },
+    "SIZE_STYLE": {
+        "allShoes": [
+            "Obuwie"
+        ],
+        "Sneakersy": [
+            "Obuwie"
+        ],
+        "Kozaki": [
+            "Obuwie"
+        ],
+        "Botki": [
+            "Obuwie"
+        ],
+        "Półbuty": [
+            "Obuwie"
+        ],
+        "Czółenka": [
+            "Obuwie"
+        ],
+        "Sandały": [
+            "Obuwie"
+        ],
+        "Kapcie": [
+            "Obuwie"
+        ],
+        "Buty kąpielowe": [
+            "Obuwie"
+        ],
+        "Buty letnie": [
+            "Obuwie"
+        ],
+        "allClothes": [
+            "Górne części garderoby",
+            "Sukienki i spódnice",
+            "Spodnie",
+            "Moda plażowa i dolna bielizna"
+        ],
+        "Kurtki i płaszcze": [
+            "Górne części garderoby"
+        ],
+        "Swetry i bluzy": [
+            "Górne części garderoby"
+        ],
+        "Sukienki": [
+            "Górne części garderoby",
+            "Sukienki i spódnice"
+        ],
+        "Bluzki i tuniki": [
+            "Górne części garderoby"
+        ],
+        "Koszulki i topy": [
+            "Górne części garderoby"
+        ],
+        "Jeansy": [
+            "Sukienki i spódnice",
+            "Spodnie"
+        ],
+        "Spodnie": [
+            "Sukienki i spódnice",
+            "Spodnie"
+        ],
+        "Spódnice": [
+            "Sukienki i spódnice"
+        ],
+        "Bielizna": [
+            "Górne części garderoby",
+            "Moda plażowa i dolna bielizna"
+        ],
+        "Moda plażowa": [
+            "Moda plażowa i dolna bielizna"
+        ]
+    },
+    "SIZE": {
+        "Górne części garderoby": [
+            "30",
+            "32",
+            "34",
+            "36",
+            "38",
+            "40",
+            "42",
+            "44",
+            "46",
+            "48",
+            "50",
+            "XXS",
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "Sukienki i spódnice": [
+            "30",
+            "32",
+            "34",
+            "36",
+            "38",
+            "40",
+            "42",
+            "44",
+            "46",
+            "48",
+            "50",
+            "XXS",
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "Spodnie": [
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "32",
+            "34",
+            "36",
+            "37",
+            "38",
+            "39",
+            "40",
+            "44",
+            "46",
+            "48",
+            "50",
+            "XXS",
+            "XS",
+            "S",
+            "L"
+        ],
+        "Moda plażowa i dolna bielizna": [
+            "32",
+            "34",
+            "70",
+            "75",
+            "80",
+            "85",
+            "85B",
+            "90",
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "Obuwie": [
+            "35",
+            "36",
+            "37",
+            "38",
+            "39",
+            "40",
+            "41",
+            "42",
+            "43",
+            "44",
+            "45"
+        ],
+        "Akcesoria": [
+            "7.5",
+            "57",
+            "58",
+            "60",
+            "80",
+            "90"
+        ]
+    }
+}

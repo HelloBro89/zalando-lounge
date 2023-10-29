@@ -25,6 +25,7 @@ export const loginHandler = async ({ request, crawler, page }) => {
     REQUEST_FULL: request,
     USER_DATA: request.userData,
   });
+
   await removeElement(page, SELECTORS.cookies);
   await page.click(SELECTORS.loginBtn);
 

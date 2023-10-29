@@ -11,9 +11,10 @@ const SELECTORS = {
       womenFilterBtn: '[aria-label="Kobiety"] button',
       menFilterBtn: '[aria-label="Mężczyźni"] button',
       productType: {
-        shoes: `//*[starts-with(@class, 'ContainerDesktopstyles__CategoryContainer') and .//*[contains(@class, 'styles__Title') and .//span[contains(text(), 'Buty')]]]/div[starts-with(@class, 'styles__CategoryWrapper')]/button`,
-        // shoes: `//*[starts-with(@class, 'ContainerDesktopstyles__CategoryContainer') and .//*[contains(@class, 'styles__Title') and .//span[contains(text(), 'Buty')]]]`,
-        cloth: `//*[starts-with(@class, 'ContainerDesktopstyles__CategoryContainer') and .//*[contains(@class, 'styles__Title') and .//span[contains(text(), 'Odzież')]]]`,
+        shoesAll: `//*[starts-with(@class, 'ContainerDesktopstyles__CategoryContainer') and .//*[contains(@class, 'styles__Title') and .//span[contains(text(), 'Buty')]]]/div[starts-with(@class, 'styles__CategoryWrapper')]/button`,
+        shoesBotki: `//*[starts-with(@class, 'ContainerDesktopstyles__CategoryContainer') and .//*[contains(@class, 'styles__Title') and .//span[contains(text(), 'Buty')]]]/div[starts-with(@class, 'styles__CategoryWrapper')]//li/button[./span[text() = 'Botki']]`,
+        clothAll: `//*[starts-with(@class, 'ContainerDesktopstyles__CategoryContainer') and .//*[contains(@class, 'styles__Title') and .//span[contains(text(), 'Odzież')]]]/div[starts-with(@class, 'styles__CategoryWrapper')]/button`,
+        clothSukienki: `//*[starts-with(@class, 'ContainerDesktopstyles__CategoryContainer') and .//*[contains(@class, 'styles__Title') and .//span[contains(text(), 'Odzież')]]]/div[starts-with(@class, 'styles__CategoryWrapper')]//li/button[./span[text() = 'Sukienki']]`,
         productStyle: {
           all: `./div[starts-with(@class, 'styles__CategoryWrapper')]/button`,
         },
@@ -35,36 +36,37 @@ export const setFiltersAndGetLinks = async ({ request, crawler, page }) => {
   console.log(' ------------ FILTERING ------------------- \n', request);
 
   await removeElement(page, SELECTORS.cookies);
-  await page.waitForSelector(SELECTORS.mainCategory.mainCategoryBtn);
+  console.log(' ----- CHOOSE MAIN CATEGORY ----- \n');
+  await page.waitForSelector(SELECTORS.mainCategory.mainCategoryBtn); //* static
   await page.click(SELECTORS.mainCategory.mainCategoryBtn);
   await page.waitForTimeout(1000);
-  console.log(' ----- CHOOSE MAIN CATEGORY ----- \n');
 
+  console.log(' ----- CHOOSE SEX ----- \n');
   await page.waitForSelector(SELECTORS.mainCategory.sex.womenFilterBtn);
   await page.click(SELECTORS.mainCategory.sex.womenFilterBtn);
   await page.waitForTimeout(1000);
-  console.log(' ----- CHOOSE WOMEN ----- \n');
 
-  await page.waitForXPath(SELECTORS.mainCategory.sex.productType.shoes, { visible: true });
-  const [productStyleBtn] = await page.$x(SELECTORS.mainCategory.sex.productType.shoes);
+  console.log(' ----- CHOOSE PRODUCT TYPE ----- \n');
+  await page.waitForXPath(SELECTORS.mainCategory.sex.productType.shoesAll, { visible: true });
+  const [productStyleBtn] = await page.$x(SELECTORS.mainCategory.sex.productType.shoesAll);
   await productStyleBtn.click();
-  console.log(' ----- CHOOSE ALL SHOES ----- \n');
 
-  const [sizeFilterBtn] = await page.$x(SELECTORS.sizeCategory.sizeCategoryBtn);
-  await sizeFilterBtn.click();
   console.log(' ----- CHOOSE SIZE CATEGORY ----- \n');
+  const [sizeFilterBtn] = await page.$x(SELECTORS.sizeCategory.sizeCategoryBtn); //* static
+  await sizeFilterBtn.click();
   await page.waitForTimeout(1000);
 
+  console.log(' ----- CHOOSE SIZE FOR PRODUCT TYPE ----- \n');
   await page.waitForXPath(SELECTORS.sizeCategory.productStyle.shoes, { visible: true });
   const [shoesType] = await page.$x(SELECTORS.sizeCategory.productStyle.shoes);
   await shoesType.click();
   await page.waitForTimeout(1000);
-  // await page.waitForTimeout(300000);
 
+  console.log(' ----- CHOOSE REQUIRE SIZE ----- \n');
   await page.waitForXPath(SELECTORS.sizeCategory.productStyle.sizes['36'], { visible: true });
   const [requireSizeBtn] = await page.$x(SELECTORS.sizeCategory.productStyle.sizes['36']);
   await requireSizeBtn.click();
-  console.log(' ----- CHOOSE REQUIRE SIZE ----- \n');
+
   await page.waitForTimeout(1000);
 
   const $ = await getHTML(page);
