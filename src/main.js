@@ -6,10 +6,10 @@ import { generatePromoRequests } from './helpers/generatePromoRequests.js';
 // TODO: need to improve adding to basket speed and and to solve the problem with more than one opened browser(login)
 
 const TEMP_INPUT_DATA = {
-  targetTime: '20:05:43',
+  targetTime: '',
   promos: [
     {
-      id: 'ZZO2KXU',
+      id: 'ZZO2E3W',
       filters: [
         {
           sex: 'Kobiety',

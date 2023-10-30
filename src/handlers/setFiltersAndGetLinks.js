@@ -34,46 +34,51 @@ const SELECTORS = {
 
 export const setFiltersAndGetLinks = async ({ request, crawler, page }) => {
   console.log(' ------------ FILTERING ------------------- \n', request);
+  const { selFilters } = request;
+  const productLinks = [];
 
-  await removeElement(page, SELECTORS.cookies);
-  console.log(' ----- CHOOSE MAIN CATEGORY ----- \n');
-  await page.waitForSelector(SELECTORS.mainCategory.mainCategoryBtn); //* static
-  await page.click(SELECTORS.mainCategory.mainCategoryBtn);
-  await page.waitForTimeout(1000);
+  for (const filter of selFilters) {
+    await removeElement(page, SELECTORS.cookies);
+    console.log(' ----- CHOOSE MAIN CATEGORY ----- \n');
+    await page.waitForSelector(SELECTORS.mainCategory.mainCategoryBtn); //* static
+    await page.click(SELECTORS.mainCategory.mainCategoryBtn);
+    await page.waitForTimeout(1000);
 
-  console.log(' ----- CHOOSE SEX ----- \n');
-  await page.waitForSelector(SELECTORS.mainCategory.sex.womenFilterBtn);
-  await page.click(SELECTORS.mainCategory.sex.womenFilterBtn);
-  await page.waitForTimeout(1000);
+    console.log(' ----- CHOOSE SEX ----- \n');
+    await page.waitForSelector(SELECTORS.mainCategory.sex.womenFilterBtn);
+    await page.click(SELECTORS.mainCategory.sex.womenFilterBtn);
+    await page.waitForTimeout(1000);
 
-  console.log(' ----- CHOOSE PRODUCT TYPE ----- \n');
-  await page.waitForXPath(SELECTORS.mainCategory.sex.productType.shoesAll, { visible: true });
-  const [productStyleBtn] = await page.$x(SELECTORS.mainCategory.sex.productType.shoesAll);
-  await productStyleBtn.click();
+    console.log(' ----- CHOOSE PRODUCT TYPE ----- \n');
+    await page.waitForXPath(SELECTORS.mainCategory.sex.productType.shoesAll, { visible: true });
+    const [productStyleBtn] = await page.$x(SELECTORS.mainCategory.sex.productType.shoesAll);
+    await productStyleBtn.click();
 
-  console.log(' ----- CHOOSE SIZE CATEGORY ----- \n');
-  const [sizeFilterBtn] = await page.$x(SELECTORS.sizeCategory.sizeCategoryBtn); //* static
-  await sizeFilterBtn.click();
-  await page.waitForTimeout(1000);
+    console.log(' ----- CHOOSE SIZE CATEGORY ----- \n');
+    const [sizeFilterBtn] = await page.$x(SELECTORS.sizeCategory.sizeCategoryBtn); //* static
+    await sizeFilterBtn.click();
+    await page.waitForTimeout(1000);
 
-  console.log(' ----- CHOOSE SIZE FOR PRODUCT TYPE ----- \n');
-  await page.waitForXPath(SELECTORS.sizeCategory.productStyle.shoes, { visible: true });
-  const [shoesType] = await page.$x(SELECTORS.sizeCategory.productStyle.shoes);
-  await shoesType.click();
-  await page.waitForTimeout(1000);
+    console.log(' ----- CHOOSE SIZE FOR PRODUCT TYPE ----- \n');
+    await page.waitForXPath(SELECTORS.sizeCategory.productStyle.shoes, { visible: true });
+    const [shoesType] = await page.$x(SELECTORS.sizeCategory.productStyle.shoes);
+    await shoesType.click();
+    await page.waitForTimeout(1000);
 
-  console.log(' ----- CHOOSE REQUIRE SIZE ----- \n');
-  await page.waitForXPath(SELECTORS.sizeCategory.productStyle.sizes['36'], { visible: true });
-  const [requireSizeBtn] = await page.$x(SELECTORS.sizeCategory.productStyle.sizes['36']);
-  await requireSizeBtn.click();
+    console.log(' ----- CHOOSE REQUIRE SIZE ----- \n');
+    await page.waitForXPath(SELECTORS.sizeCategory.productStyle.sizes['36'], { visible: true });
+    const [requireSizeBtn] = await page.$x(SELECTORS.sizeCategory.productStyle.sizes['36']);
+    await requireSizeBtn.click();
 
-  await page.waitForTimeout(1000);
+    await page.waitForTimeout(1000);
 
-  const $ = await getHTML(page);
-  const productLinks = getProductLinks($);
-
-  for (const productLink of productLinks) {
-    await Dataset.pushData(productLink);
+    const $ = await getHTML(page);
+    const links = getProductLinks($);
+    productLinks.push(...links);
+    for (const link of links) {
+      await Dataset.pushData(link);
+    }
   }
+
   await crawler.addRequests(productLinks); // ! add to basket handler
 };
