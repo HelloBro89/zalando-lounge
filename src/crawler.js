@@ -18,10 +18,10 @@ export const startCrawler = async (params) => {
     {
       minConcurrency: 5,
       maxConcurrency: 20,
-      maxRequestRetries: 0,
+      maxRequestRetries: 1,
       headless: false,
       requestHandler: router,
-      useSessionPool: true,
+      useSessionPool: false,
       // sessionPoolOptions: { maxPoolSize: 100 },
       requestHandlerTimeoutSecs: 999999,
       preNavigationHooks: [

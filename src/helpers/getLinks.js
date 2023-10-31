@@ -1,10 +1,10 @@
 import config from '../../config/app-config.js';
 
 const SELECTORS = {
-  products: '#articleListWrapper li',
+  products: '#articleListWrapper li:not(:has([class^="FlagWrapper"]))',
 };
 
-export const getProductLinks = ($) => {
+export const getProductLinks = ($, sizes) => {
   const $products = $(SELECTORS.products).toArray();
   return $products.map((product) => {
     const $product = $(product);
@@ -12,6 +12,7 @@ export const getProductLinks = ($) => {
     return {
       label: config.LABELS.BASKET,
       url: `https://www.zalando-lounge.pl${url}`,
+      userData: { sizes },
     };
   });
 };

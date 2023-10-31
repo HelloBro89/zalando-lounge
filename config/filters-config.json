@@ -6,8 +6,8 @@
         "BOYS": "Chłopcy"
     },
     "PRODUCT_TYPES": {
-        "SHOES": "SHOES",
-        "CLOTHES": "CLOTHES"
+        "SHOES": "Buty",
+        "CLOTHES": "Odzież"
     },
     "PRODUCT_STYLE": {
         "SHOES": {
@@ -20,7 +20,8 @@
             "SANDALS": "Sandały",
             "SLIPPERS": "Kapcie",
             "BATHING_SHOES": "Buty kąpielowe",
-            "SUMMER": "Buty letnie"
+            "SUMMER": "Buty letnie",
+            "SPORTS": "Buty sportowe"
         },
         "CLOTHES": {
             "ALL": "allClothes",
@@ -38,6 +39,9 @@
     },
     "SIZE_STYLE": {
         "allShoes": [
+            "Obuwie"
+        ],
+        "Buty sportowe": [
             "Obuwie"
         ],
         "Sneakersy": [
@@ -72,6 +76,10 @@
             "Sukienki i spódnice",
             "Spodnie",
             "Moda plażowa i dolna bielizna"
+        ],
+        "Koszulki klubowe i akcesoria dla kibiców": [
+            "Spodnie",
+            "Górne części garderoby"
         ],
         "Kurtki i płaszcze": [
             "Górne części garderoby"

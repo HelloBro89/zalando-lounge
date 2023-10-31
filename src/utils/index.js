@@ -27,7 +27,6 @@ export const runAtSpecificTime = async (callback, targetTime = 0) => {
 
   if (targetTime) {
     const targetTimeParts = targetTime.split(':');
-
     const [hours, minutes, seconds] = targetTimeParts;
 
     const targetHour = parseInt(hours);
@@ -40,13 +39,13 @@ export const runAtSpecificTime = async (callback, targetTime = 0) => {
   }
 
   const timeDiff = timeToTarget - currentTime;
-
+  console.log({ timeDiff });
   if (timeDiff < 0) {
     timeToTarget.setDate(timeToTarget.getDate() + 1);
   }
 
   const delay = timeToTarget - currentTime;
-
+  console.log({ delay });
   return new Promise((resolve, reject) => {
     setTimeout(async () => {
       try {

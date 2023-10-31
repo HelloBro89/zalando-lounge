@@ -5,6 +5,8 @@ import { removeElement } from '../utils/index.js';
 
 const SELECTORS = {
   cookies: 'div#usercentrics-button',
+  colorCategory: '//*[starts-with(@class, "tabs___link") and contains(., "Kolor")]',
+  colorWhite: 'input[aria-label="biały"]',
   mainCategory: {
     mainCategoryBtn: '#category-tab-selector',
     sex: {
@@ -34,51 +36,71 @@ const SELECTORS = {
 
 export const setFiltersAndGetLinks = async ({ request, crawler, page }) => {
   console.log(' ------------ FILTERING ------------------- \n', request);
-  const { selFilters } = request;
+  console.log(' ------------ FILTERING userData ------------------- \n', request.userData);
+  const { selFilters } = request.userData;
   const productLinks = [];
-
   for (const filter of selFilters) {
+    const { sex, productStyle, sizeVariantsSel } = filter;
     await removeElement(page, SELECTORS.cookies);
     console.log(' ----- CHOOSE MAIN CATEGORY ----- \n');
     await page.waitForSelector(SELECTORS.mainCategory.mainCategoryBtn); //* static
     await page.click(SELECTORS.mainCategory.mainCategoryBtn);
-    await page.waitForTimeout(1000);
 
     console.log(' ----- CHOOSE SEX ----- \n');
-    await page.waitForSelector(SELECTORS.mainCategory.sex.womenFilterBtn);
-    await page.click(SELECTORS.mainCategory.sex.womenFilterBtn);
-    await page.waitForTimeout(1000);
+    await page.waitForSelector(sex);
+    await page.click(sex);
 
     console.log(' ----- CHOOSE PRODUCT TYPE ----- \n');
-    await page.waitForXPath(SELECTORS.mainCategory.sex.productType.shoesAll, { visible: true });
-    const [productStyleBtn] = await page.$x(SELECTORS.mainCategory.sex.productType.shoesAll);
+    await page.waitForXPath(productStyle, { visible: true }); // ! mb doesn't exist
+    const [productStyleBtn] = await page.$x(productStyle);
     await productStyleBtn.click();
+    await page.waitForTimeout(500);
 
     console.log(' ----- CHOOSE SIZE CATEGORY ----- \n');
     const [sizeFilterBtn] = await page.$x(SELECTORS.sizeCategory.sizeCategoryBtn); //* static
     await sizeFilterBtn.click();
-    await page.waitForTimeout(1000);
+    for (const sizeVariant of sizeVariantsSel) {
+      const { variantSel, sizes, listOfSizes } = sizeVariant;
 
-    console.log(' ----- CHOOSE SIZE FOR PRODUCT TYPE ----- \n');
-    await page.waitForXPath(SELECTORS.sizeCategory.productStyle.shoes, { visible: true });
-    const [shoesType] = await page.$x(SELECTORS.sizeCategory.productStyle.shoes);
-    await shoesType.click();
-    await page.waitForTimeout(1000);
+      await page.waitForTimeout(1000);
 
-    console.log(' ----- CHOOSE REQUIRE SIZE ----- \n');
-    await page.waitForXPath(SELECTORS.sizeCategory.productStyle.sizes['36'], { visible: true });
-    const [requireSizeBtn] = await page.$x(SELECTORS.sizeCategory.productStyle.sizes['36']);
-    await requireSizeBtn.click();
+      console.log(' ----- CHOOSE SIZE FOR PRODUCT TYPE ----- \n');
+      // await page.waitForXPath(variantSel, { visible: true });
+      const [shoesType] = await page.$x(variantSel);
 
-    await page.waitForTimeout(1000);
-
-    const $ = await getHTML(page);
-    const links = getProductLinks($);
-    productLinks.push(...links);
-    for (const link of links) {
-      await Dataset.pushData(link);
+      if (shoesType) {
+        await shoesType.click();
+        await page.waitForTimeout(700);
+        for (const size of sizes) {
+          console.log(' ----- CHOOSE REQUIRE SIZE ----- \n');
+          const [requireSizeBtn] = await page.$x(size);
+          if (requireSizeBtn) {
+            await requireSizeBtn.click();
+          }
+        }
+      }
     }
+
+    // ! ----------------------------- TEMP -----------------------------
+    console.log(' ----- CHOOSE WHITE COLOR ----- \n');
+    await page.waitForXPath(SELECTORS.colorCategory, { visible: true }); // ! mb doesn't exist
+    const [colorCategoryBtn] = await page.$x(SELECTORS.colorCategory);
+    await colorCategoryBtn.click();
+    await page.waitForTimeout(500);
+    const whiteBtn = await page.$(SELECTORS.colorWhite);
+    if (whiteBtn) {
+      await page.click(SELECTORS.colorWhite);
+    }
+    // ! ----------------------------------------------------------------
+
+    await page.waitForTimeout(2500);
+    const $ = await getHTML(page);
+    const links = getProductLinks($, request.userData.listOfSizes);
+    productLinks.push(...links);
   }
 
-  await crawler.addRequests(productLinks); // ! add to basket handler
+  for (const link of productLinks) {
+    await Dataset.pushData(link);
+  }
+  await crawler.addRequests(productLinks);
 };
