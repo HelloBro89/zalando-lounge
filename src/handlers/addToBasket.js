@@ -15,7 +15,7 @@ export const addToBasket = async ({ request, page }) => {
   const { sizes } = request.userData;
   const [firstSize, secSize] = sizes;
 
-  const firstSelSize = `//*[contains(@class, "styles__ArticleSizeItemList")]//*[starts-with(@class, "styles__ArticleSizeItemWrapper")]//button[not(@disabled) and .//span[text()=${firstSize}]]`;
+  const firstSelSize = `//*[contains(@class, "styles__ArticleSizeItemList")]//*[starts-with(@class, "styles__ArticleSizeItemWrapper")]//button[not(@disabled) and .//span[text()="${firstSize}"]]`;
   const [firstSizeBtn] = await page.$x(firstSelSize);
 
   let isFirstSize = false;
@@ -26,7 +26,7 @@ export const addToBasket = async ({ request, page }) => {
     await page.click(SELECTORS.basketBtn);
   }
 
-  const secSelSize = `//*[contains(@class, "styles__ArticleSizeItemList")]//*[starts-with(@class, "styles__ArticleSizeItemWrapper")]//button[not(@disabled) and .//span[text()=${secSize}]]`;
+  const secSelSize = `//*[contains(@class, "styles__ArticleSizeItemList")]//*[starts-with(@class, "styles__ArticleSizeItemWrapper")]//button[not(@disabled) and .//span[text()="${secSize}"]]`;
   const [secSizeBtn] = await page.$x(secSelSize);
   if (secSizeBtn) {
     await secSizeBtn.click();

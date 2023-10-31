@@ -6,8 +6,8 @@ import FILTERS_CONFIG from '../config/filters-config.json' assert { type: 'json'
 // TODO: to solve the problem with more than one opened browser(login)
 
 const TEMP_INPUT_DATA = {
-  targetTime: '7:00',
-  listOfSizes: ['38', '39'],
+  targetTime: '',
+  listOfSizes: ['37-38', '58'],
   promos: [
     {
       promoId: 'ZZO2FHC',
@@ -28,7 +28,7 @@ const TEMP_INPUT_DATA = {
           sex: 'Kobiety',
           productType: 'SHOES',
           productStyle: FILTERS_CONFIG.PRODUCT_STYLE.SHOES.ALL,
-          sizes: ['38', '39'],
+          sizes: ['37-38', '58'],
         },
       ],
     },

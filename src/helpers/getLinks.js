@@ -1,7 +1,7 @@
 import config from '../../config/app-config.js';
 
 const SELECTORS = {
-  products: '#articleListWrapper li:not(:has([class^="FlagWrapper"]))',
+  products: '#articleListWrapper li:not(:has(svg))',
 };
 
 export const getProductLinks = ($, sizes) => {
